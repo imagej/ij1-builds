@@ -1,8 +1,7 @@
 #!/bin/sh
 
 BRANCHNAME=imagej
-#URL=git@github.com:imagej/ImageJA
-URL=https://github.com/imagej/ImageJA
+URL=git@github.com:imagej/ImageJA
 
 git rev-parse $BRANCHNAME >/dev/null 2>/dev/null ||
 git fetch $URL $BRANCHNAME:refs/heads/$BRANCHNAME || {
@@ -31,7 +30,7 @@ else
 	MESSAGE="$(cat)"
 fi
 
-MAC2UNIX="$(cd "$(dirname "$0")" && pwd)"/mac2unix.pl
+MAC2UNIX="../mac2unix.pl
 
 git fetch $URL $BRANCHNAME &&
 git push . +FETCH_HEAD:$BRANCHNAME || {
