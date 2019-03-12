@@ -1,0 +1,10 @@
+addons:
+  apt:
+    packages: w3m 
+    packages: perl 
+language: java
+jdk: oraclejdk8
+branches:
+  only: master
+install: true
+script: "./build.sh"
