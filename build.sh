@@ -43,9 +43,7 @@ export LANG
 
 echo "Checkout ImageJA"
 git clone https://github.com/imagej/ImageJA
-
 cd ImageJA
-git tag -a -f -m "Travis Build $TRAVIS_BUILD_NUMBER" travis-ImageJ1-sync-with-notes-$TRAVIS_BUILD_NUMBER
 
 echo "Calling commit-new-version"
 (cat ../$NOTES | \

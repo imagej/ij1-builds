@@ -30,7 +30,7 @@ else
 	MESSAGE="$(cat)"
 fi
 
-MAC2UNIX="../mac2unix.pl
+MAC2UNIX=../mac2unix.pl
 
 git fetch $URL $BRANCHNAME &&
 git push . +FETCH_HEAD:$BRANCHNAME || {
