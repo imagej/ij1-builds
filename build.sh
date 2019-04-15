@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-export GIT_AUTHOR_NAME="ImageJA Builder - Travis"
+export GIT_AUTHOR_NAME="ImageJA Builder Travis"
 export GIT_AUTHOR_EMAIL="travis@travis-ci.com"
 
 # w3m on mac buggy, use http
@@ -43,7 +43,9 @@ export LANG
 
 echo "Checkout ImageJA"
 git clone https://github.com/imagej/ImageJA
+
 cd ImageJA
+git tag -a -f -m "Travis Build $TRAVIS_BUILD_NUMBER" travis-ImageJ1-sync-with-notes-$TRAVIS_BUILD_NUMBER
 
 echo "Calling commit-new-version"
 (cat ../$NOTES | \
@@ -64,20 +66,26 @@ sh -x ../sync-with-imagej.sh || {
 	echo "Could not update 'master'"
 	exit 1
 }
+test -n "$NO_PUSH" && exit
 
-#for REMOTE in \
-#	git@github.com:imagej/ImageJA
-#do
-#	ERR="$(git push $REMOTE imagej master "v$DOTVERSION" 2>&1 ||
-#	  case "$REMOTE $ERR" in *repo.or.cz*"Connection refused"*)
-#		  echo "Warning: repo.or.cz was not reachable"
-#		  ;;
-#	  *)
-#		  echo "${ERR}Could not push"
-#		  exit 1
-#		;;
-#	esac
-#done
+for REMOTE in \
+	git@github.com:imagej/ImageJA
+do
+	ERR="$(git push $REMOTE imagej master "v$DOTVERSION" 2>&1 ||
+	  case "$REMOTE $ERR" in *repo.or.cz*"Connection refused"*)
+		  echo "Warning: repo.or.cz was not reachable"
+		  ;;
+	  *)
+		  echo "${ERR}Could not push"
+		  exit 1
+		;;
+	esac
+done
 
-curl -fsLO https://raw.githubusercontent.com/scijava/scijava-scripts/master/travis-javadoc.sh
-#sh travis-javadoc.sh ImageJA ,,,,
+#echo "Generating javadocs"
+#curl -fsLO https://raw.githubusercontent.com/scijava/scijava-scripts/master/travis-javadoc.sh
+#sh travis-javadoc.sh ImageJA
+
+#echo "Deploying to Nexus"
+#sh deploy-to-nexus.sh
+

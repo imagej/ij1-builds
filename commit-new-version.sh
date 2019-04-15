@@ -30,8 +30,6 @@ else
 	MESSAGE="$(cat)"
 fi
 
-MAC2UNIX=../mac2unix.pl
-
 git fetch $URL $BRANCHNAME &&
 git push . +FETCH_HEAD:$BRANCHNAME || {
 	echo "Could not update $BRANCHNAME to $UPSTREAM"
@@ -66,7 +64,7 @@ if !  find \( -name .DS_Store -name .FBCIndex -o -name .FBCLockFolder -o -name .
 then
 	echo "No temporary files removed" >&2
 fi &&
-find -type f -print0 | xargs -0 perl "$MAC2UNIX" &&
+find -type f -print0 | xargs -0 perl ../../../mac2unix.pl &&
 find -type f -print0 | xargs -0 git update-index --add &&
 tree=$(git write-tree) &&
 export GIT_AUTHOR_NAME="Wayne Rasband" &&
