@@ -82,10 +82,6 @@ do
 	esac
 done
 
-#echo "Generating javadocs"
-#curl -fsLO https://raw.githubusercontent.com/scijava/scijava-scripts/master/travis-javadoc.sh
-#sh travis-javadoc.sh ImageJA
-
 #echo "Deploying to Nexus"
 #sh deploy-to-nexus.sh
 
