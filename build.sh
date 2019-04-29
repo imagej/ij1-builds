@@ -71,7 +71,7 @@ test -n "$NO_PUSH" && exit
 for REMOTE in \
 	git@github.com:imagej/ImageJA
 do
-	ERR="$(git push $REMOTE imagej master "v$DOTVERSION" 2>&1 ||
+	ERR="$(git push $REMOTE imagej master "v$DOTVERSION" 2>&1)" ||
 	  case "$REMOTE $ERR" in *repo.or.cz*"Connection refused"*)
 		  echo "Warning: repo.or.cz was not reachable"
 		  ;;
