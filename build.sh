@@ -22,7 +22,7 @@ DOTVERSION=$(echo $VERSION | sed "s/^./&./")
 git fetch https://github.com/imagej/ImageJA.git master
 git log FETCH_HEAD | grep "^      .[^ ]\? $DOTVERSION,\? " && {
 	echo "Already have $DOTVERSION"
-#	exit 0
+  exit 0
 }
 echo "*** Get src zip"
 ZIP=ij$VERSION-src.zip
