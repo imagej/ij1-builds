@@ -66,9 +66,10 @@ POM_SCIJAVA_URL=$MAVEN_URL/org/scijava/pom-scijava
 POM_SCIJAVA_VERSION="$(curl -s $POM_SCIJAVA_URL/maven-metadata.xml |
 	sed -n 's/.*<release>\(.*\)<\/release>.*/\1/p')"
 
-# rewrite version in pom.xml
+# Rewrite version in pom.xml
 git show $HEAD:pom.xml > "$GIT_INDEX_FILE.pom" &&
-sed -e '/^\t</s/\(<version>\).*\(<\/version>\)/\1'"$VERSION"'\2/' \
+SVERSION="$VERSION-SNAPSHOT"
+sed -e '/^\t</s/\(<version>\).*\(<\/version>\)/\1'"$SVERSION"'\2/' \
 	-e "/<parent>/,/<\/pa/s/\(<version>\)[^<]*/\1$POM_SCIJAVA_VERSION/" \
 	-e "/<parent>/,/<\/pa/s/\(<groupId>\)[^<]*/\1org.scijava/" \
 	-e "/<parent>/,/<\/pa/s/\(<artifactId>\)[^<]*/\1pom-scijava/" \
@@ -94,15 +95,12 @@ sed -e 's~\t\(.*\.java\)$~\tsrc/main/java/\1~' \
 git update-index --index-info  < "$GIT_INDEX_FILE.list.new" ||
 die "Could not transform $IJ1BRANCH's tree"
 
-echo "Synchronize with ImageJ $VERSION" > "$GIT_INDEX_FILE.message" &&
+echo "Synchronized with ImageJ $VERSION" > "$GIT_INDEX_FILE.message" &&
 TREE=$(git write-tree) &&
 NEWHEAD="$(git commit-tree $TREE -p $HEAD -p $IJ1HEAD \
 	< "$GIT_INDEX_FILE.message")" &&
-git update-ref -m "Synchronize with ImageJ1" $BRANCH $NEWHEAD $HEAD ||
+git update-ref -m "Synchronized with ImageJ1" $BRANCH $NEWHEAD $HEAD ||
 die "Could not update $BRANCH"
-
-git tag -a -m "v$VERSION" "v$VERSION" $NEWHEAD ||
-die "Could not tag $VERSION"
 
 test -z "$NEED_TO_UPDATE_WORKING_TREE" || {
 	echo "Updating work-tree" &&
