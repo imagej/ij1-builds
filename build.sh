@@ -81,7 +81,3 @@ do
 		;;
 	esac
 done
-
-#echo "Deploying to Nexus"
-#sh deploy-to-nexus.sh
-
