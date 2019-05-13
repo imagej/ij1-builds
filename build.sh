@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-export GIT_AUTHOR_NAME="Travis"
+export GIT_AUTHOR_NAME="ImageJA Builder Travis"
 export GIT_AUTHOR_EMAIL="travis@travis-ci.com"
 
 # w3m on mac buggy, use http
@@ -45,6 +45,7 @@ echo "Checkout ImageJA"
 git clone https://github.com/imagej/ImageJA
 
 cd ImageJA
+git tag -a -f -m "Travis Build $TRAVIS_BUILD_NUMBER" travis-ImageJ1-sync-with-notes-$TRAVIS_BUILD_NUMBER
 
 echo "Calling commit-new-version"
 (cat ../$NOTES | \
@@ -80,3 +81,7 @@ do
 		;;
 	esac
 done
+
+#echo "Deploying to Nexus"
+#sh deploy-to-nexus.sh
+
