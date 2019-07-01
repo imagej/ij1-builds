@@ -89,10 +89,19 @@ printf "100644 $POMHASH 0\tpom.xml\n" > "$GIT_INDEX_FILE.list.new" ||
 die "Could not update pom.xml"
 debug "POMHASH = $POMHASH"
 
-# copy .gitignore from previous HEAD
-GITIGNORE=$(git rev-parse $HEAD:.gitignore 2>/dev/null) &&
-printf "100644 $GITIGNORE 0\t.gitignore\n" >> "$GIT_INDEX_FILE.list.new" ||
-die "Could not find .gitignore in the current HEAD"
+# copy important files from previous HEAD
+for file in \
+	.gitignore \
+	.travis.yml \
+	.travis/build.sh \
+	.travis/signingkey.asc.enc \
+	README.md
+do
+	REV=$(git rev-parse $HEAD:$file 2>/dev/null) &&
+	printf "100644 $REV 0\t$file\n" >> "$GIT_INDEX_FILE.list.new" ||
+	die "Could not find $file in the current HEAD"
+	debug "Preserving $file (revision=$REV)"
+done
 
 git ls-files --stage > "$GIT_INDEX_FILE.list.old" &&
 mv "$GIT_INDEX_FILE" "$GIT_INDEX_FILE.old" &&
