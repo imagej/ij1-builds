@@ -5,7 +5,7 @@ export GIT_AUTHOR_NAME="ImageJA Builder Travis"
 export GIT_AUTHOR_EMAIL="travis@travis-ci.com"
 
 # w3m on mac buggy, use http
-URL=http://wsr.imagej.net
+URL=https://wsr.imagej.net
 SRC_URL=$URL/src
 NOTES_URL=$URL/notes.html
 
@@ -19,7 +19,7 @@ test "$VERSION" || {
 }
 echo "*** Get version from notes and check if this version already exists"
 DOTVERSION=$(echo $VERSION | sed "s/^./&./")
-git fetch https://github.com/imagej/ImageJA.git master
+git fetch https://github.com/imagej/ImageJA master
 git log FETCH_HEAD | grep "^      .[^ ]\? $DOTVERSION,\? " && {
 	echo "Already have $DOTVERSION"
   exit 0
