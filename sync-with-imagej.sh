@@ -9,12 +9,17 @@ die () {
 	exit 1
 }
 
+debug () {
+	if [ "$DEBUG" ]; then echo "[DEBUG] $*"; fi
+}
+
 test a--wayne = "a$1" && {
 	git fetch git://github.com/imagej/imagej1.git master
 	IJ1BRANCH=$(git rev-parse FETCH_HEAD)
 	shift
 }
 
+debug "BRANCH = $BRANCH"
 NEED_TO_UPDATE_WORKING_TREE=
 test $(git config --bool core.bare) = true ||
 test $BRANCH != "$(git symbolic-ref HEAD 2> /dev/null)" || {
@@ -23,6 +28,7 @@ test $BRANCH != "$(git symbolic-ref HEAD 2> /dev/null)" || {
 	die "The work tree is dirty"
 	NEED_TO_UPDATE_WORKING_TREE=t
 }
+debug "NEED_TO_UPDATE_WORKING_TREE = $NEED_TO_UPDATE_WORKING_TREE"
 
 ERROR="$(git fetch $URL $BRANCH 2>&1)" ||
 die "${ERROR}No branch $BRANCH at $URL?"
@@ -32,6 +38,7 @@ HEAD=$(git rev-parse $BRANCH) || {
 	git update-ref -m "Initialize synchronization" $BRANCH $HEAD
 } ||
 die "Could not initialize $BRANCH"
+debug "HEAD = $HEAD"
 
 if test -z "$NEED_TO_UPDATE_WORKING_TREE"
 then
@@ -47,6 +54,7 @@ fi
 
 IJ1HEAD=$(git rev-parse $IJ1BRANCH) ||
 die "No ImageJ1 branch?"
+debug "IJ1HEAD = $IJ1HEAD"
 
 test $IJ1HEAD != "$(git merge-base $IJ1HEAD $HEAD)" ||
 die "ImageJ1 already fully merged!"
@@ -54,17 +62,20 @@ die "ImageJ1 already fully merged!"
 VERSION="$(git log -1 --pretty=format:%s $IJ1HEAD |
 	sed -n "s/^[^0-9]*\([^ 0-9A-Za-z] \)\?\([1-9][\\.0-9]*.\)[^0-9A-Za-z].*$/\2/p")" ||
 die "Could not determine ImageJ version from branch $IJ1BRANCH"
+debug "VERSION = $VERSION"
 
 # write an update without checking anything out
 export GIT_INDEX_FILE="$(git rev-parse --git-dir)"/IJ1INDEX &&
 git read-tree $IJ1HEAD ||
 die "Could not read current ImageJ1 tree"
+debug "GIT_INDEX_FILE = $GIT_INDEX_FILE"
 
 # Obtain newest pom-scijava version
 MAVEN_URL=https://maven.scijava.org/content/groups/public
 POM_SCIJAVA_URL=$MAVEN_URL/org/scijava/pom-scijava
 POM_SCIJAVA_VERSION="$(curl -s $POM_SCIJAVA_URL/maven-metadata.xml |
 	sed -n 's/.*<release>\(.*\)<\/release>.*/\1/p')"
+debug "POM_SCIJAVA_VERSION = $POM_SCIJAVA_VERSION"
 
 # rewrite version in pom.xml
 git show $HEAD:pom.xml > "$GIT_INDEX_FILE.pom" &&
@@ -76,6 +87,7 @@ sed -e '/^\t</s/\(<version>\).*\(<\/version>\)/\1'"$VERSION"'\2/' \
 POMHASH=$(git hash-object -w "$GIT_INDEX_FILE.pom.new") &&
 printf "100644 $POMHASH 0\tpom.xml\n" > "$GIT_INDEX_FILE.list.new" ||
 die "Could not update pom.xml"
+debug "POMHASH = $POMHASH"
 
 # copy .gitignore from previous HEAD
 GITIGNORE=$(git rev-parse $HEAD:.gitignore 2>/dev/null) &&
