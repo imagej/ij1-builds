@@ -40,14 +40,8 @@ HEAD=$(git rev-parse $BRANCH) || {
 die "Could not initialize $BRANCH"
 debug "HEAD = $HEAD"
 
-if test -z "$NEED_TO_UPDATE_WORKING_TREE"
+if test "$NEED_TO_UPDATE_WORKING_TREE"
 then
-	#git push . FETCH_HEAD:$BRANCH ||
-	#die "Could not pull $BRANCH"
-	#HEAD=$(git rev-parse $BRANCH) ||
-	#die "Could not parse $BRANCH"
-  echo " would be doing a push here"
-else
 	test $HEAD = $(git rev-parse FETCH_HEAD) ||
 	die "Branch $BRANCH is not up-to-date!"
 fi
