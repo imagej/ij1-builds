@@ -61,7 +61,7 @@ echo "Calling commit-new-version"
 }
 
 echo "Calling sync-with-imagej"
-sh -x ../sync-with-imagej.sh || {
+DEBUG=1 sh -x ../sync-with-imagej.sh || {
 	echo "Could not update 'master'"
 	exit 1
 }
