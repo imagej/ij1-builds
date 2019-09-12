@@ -53,9 +53,10 @@ debug "IJ1HEAD = $IJ1HEAD"
 test $IJ1HEAD != "$(git merge-base $IJ1HEAD $HEAD)" ||
 die "ImageJ1 already fully merged!"
 
-VERSION="$(git log -1 --pretty=format:%s $IJ1HEAD |
-	sed -n "s/^[^0-9]*\([^ 0-9A-Za-z] \)\?\([1-9][\\.0-9]*.\)[^0-9A-Za-z].*$/\2/p")" ||
-die "Could not determine ImageJ version from branch $IJ1BRANCH"
+VERSION=$(git log -1 --pretty=format:%s $IJ1HEAD |
+	sed -n "s/^[^0-9]*\([^ 0-9A-Za-z] \)\?\([1-9][\\.0-9]*.\)[^0-9A-Za-z].*$/\2/p")
+
+test "$VERSION" || die "Could not determine ImageJ version from branch $IJ1BRANCH"
 debug "VERSION = $VERSION"
 
 # write an update without checking anything out
