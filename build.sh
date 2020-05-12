@@ -7,7 +7,7 @@ export GIT_AUTHOR_EMAIL="travis@travis-ci.com"
 # w3m on mac buggy, use http
 URL=https://wsr.imagej.net
 SRC_URL=$URL/src
-NOTES_URL=$URL/notes.html
+NOTES_URL=$URL/jars/notes.html
 
 echo "*** Get version of uploaded src zip"
 VERSION="$(curl $SRC_URL/ | \
