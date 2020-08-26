@@ -53,7 +53,15 @@ debug "IJ1HEAD = $IJ1HEAD"
 test $IJ1HEAD != "$(git merge-base $IJ1HEAD $HEAD)" ||
 die "ImageJ1 already fully merged!"
 
-VERSION=$(git log -1 --pretty=format:%s $IJ1HEAD |
+COMMITMSG=$(git log -1 --pretty=format:%s $IJ1HEAD)
+test "$COMMITMSG" || die "Could not find commit message for $IJ1HEAD!"
+
+debug "First 10 lines of commit message:
+---------------------------------
+$(echo "$COMMITMSG" | head -n10)
+---------------------------------"
+
+VERSION=$(echo "$COMMITMSG" |
 	sed -n "s/^[^0-9]*\([^ 0-9A-Za-z] \)\?\([1-9][\\.0-9]*.\)[^0-9A-Za-z].*$/\2/p")
 
 test "$VERSION" || die "Could not determine ImageJ version from branch $IJ1BRANCH"
