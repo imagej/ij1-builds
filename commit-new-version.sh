@@ -19,16 +19,16 @@ case "$1" in
 *) zipfile="$(pwd)/$1";;
 esac
 
-if test -t 0
-then
-	MESSAGE="$(unzip -p "$zipfile" source/release-notes.html |
-		sed -e 's/^.*<body>/<ul>/' -e 's/<a href[^>]*>Home<\/a>//' |
-		w3m -cols 72 -dump -T text/html |
-		sed -e '/^Home/d' |
-		git stripspace)"
-else
-	MESSAGE="$(cat)"
-fi
+test -e "$zipfile" || {
+	>&2 echo "No such file: $zipfile"
+	exit 1
+}
+
+MESSAGE="$(unzip -p "$zipfile" source/release-notes.html |
+	sed -e 's/^.*<body>/<ul>/' -e 's/<a href[^>]*>Home<\/a>//' |
+	w3m -cols 72 -dump -T text/html |
+	sed -e '/^Home/d' |
+	git stripspace)"
 
 git fetch $URL $BRANCHNAME &&
 git push . +FETCH_HEAD:$BRANCHNAME || {
