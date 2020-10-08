@@ -40,11 +40,6 @@ HEAD=$(git rev-parse $BRANCH) || {
 die "Could not initialize $BRANCH"
 debug "HEAD = $HEAD"
 
-if test "$NEED_TO_UPDATE_WORKING_TREE"
-then
-	test $HEAD = $(git rev-parse FETCH_HEAD) ||
-	die "Branch $BRANCH is not up-to-date!"
-fi
 
 IJ1HEAD=$(git rev-parse $IJ1BRANCH) ||
 die "No ImageJ1 branch?"
@@ -126,9 +121,6 @@ NEWHEAD="$(git commit-tree $TREE -p $HEAD -p $IJ1HEAD \
 	< "$GIT_INDEX_FILE.message")" &&
 git update-ref -m "Synchronize with ImageJ1" $BRANCH $NEWHEAD $HEAD ||
 die "Could not update $BRANCH"
-
-git tag -a -m "v$VERSION" "v$VERSION" $NEWHEAD ||
-die "Could not tag $VERSION"
 
 test -z "$NEED_TO_UPDATE_WORKING_TREE" || {
 	echo "Updating work-tree" &&
