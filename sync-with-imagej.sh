@@ -109,6 +109,7 @@ done
 git ls-files --stage > "$GIT_INDEX_FILE.list.old" &&
 mv "$GIT_INDEX_FILE" "$GIT_INDEX_FILE.old" &&
 sed -e 's~\t\(.*\.java\)$~\tsrc/main/java/\1~' \
+	-e 's~\tsrc/main/java/module-info.java$~\tsrc/main/java/ij/module-info.java~' \
 	-e 's~\tplugins/MacAdapter\.source$~\tsrc/main/java/ij/plugin/MacAdapter.java~' \
 	-e 's~\tplugins/\(.*\)\.source$~\tsrc/main/java/\1.java~' \
 	-e 's~\t\(IJ_Props.txt\|macros/\)~\tsrc/main/resources/\1~' \
