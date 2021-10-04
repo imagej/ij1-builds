@@ -9,8 +9,10 @@ before_install:
   - chmod 600 travis_deploy_key
   - eval $(ssh-agent -s)
   - ssh-add travis_deploy_key
-  - sudo cp ./entrust_g2_ca.crt /usr/local/share/ca-certificates/
-  - sudo chmod 644 /usr/local/share/ca-certificates/entrust_g2_ca.crt
+  - sudo cp ./lets-encrypt-r3.crt /usr/local/share/ca-certificates/
+  - sudo cp ./isrgrootx1.crt /usr/local/share/ca-certificates/
+  - sudo chmod 644 /usr/local/share/ca-certificates/lets-encrypt-r3.crt
+  - sudo chmod 644 /usr/local/share/ca-certificates/isrgrootx1.crt
   - sudo update-ca-certificates
 install: true
 script: "./build.sh"
