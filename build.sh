@@ -1,8 +1,8 @@
 #!/bin/sh
 set -e
 
-export GIT_AUTHOR_NAME="ImageJA Builder Travis"
-export GIT_AUTHOR_EMAIL="travis@travis-ci.com"
+export GIT_AUTHOR_NAME="ImageJA Builder GitHub Actions"
+export GIT_AUTHOR_EMAIL="ci@scijava.org"
 
 # w3m on mac buggy, use http
 URL=https://wsr.imagej.net

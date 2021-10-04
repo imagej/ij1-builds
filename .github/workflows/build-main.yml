@@ -1,0 +1,27 @@
+name: build
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v2
+        with:
+          java-version: '8'
+          distribution: 'zulu'
+      - name: Install w3m
+        run: sudo apt-get install -y w3m
+      - name: Perform pre-build setup
+        run: ./github/setup.sh
+        env:
+          IMAGEJA_DEPLOY_KEY: ${{ secrets.IMAGEJA_DEPLOY_KEY }}
+      - name: Execute the build
+        run: ./build.sh
