@@ -11,6 +11,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - uses: webfactory/ssh-agent@v0.5.3
+        with:
+            ssh-private-key: ${{ secrets.IMAGEJA_DEPLOY_KEY }}
 
       - name: Set up JDK 8
         uses: actions/setup-java@v2
@@ -19,9 +22,5 @@ jobs:
           distribution: 'zulu'
       - name: Install w3m
         run: sudo apt-get install -y w3m
-      - name: Perform pre-build setup
-        run: ./.github/setup.sh
-        env:
-          IMAGEJA_DEPLOY_KEY: ${{ secrets.IMAGEJA_DEPLOY_KEY }}
       - name: Execute the build
         run: ./build.sh
