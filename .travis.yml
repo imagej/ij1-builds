@@ -16,7 +16,7 @@ before_install:
   - sudo chown root:root /etc/ssl/certs/lets-encrypt-r3.crt
   - sudo chown root:root /etc/ssl/certs/isrgrootx1.crt
   - sudo apt-get install mono-devel
-  - sudo cert-sync /etc/ssl/certs/ca-bundle.crt
+  - mozroots --import --sync --machine --url "http://hg.mozilla.org/releases/mozilla-release/raw-file/default/security/nss/lib/ckfw/builtins/certdata.txt"
   - sudo update-ca-certificates
 install: true
 script: "./build.sh"
