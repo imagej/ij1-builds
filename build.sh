@@ -10,7 +10,7 @@ SRC_URL=$URL/src
 NOTES_URL=$URL/jars/notes.html
 
 echo "*** Get version of uploaded src zip"
-VERSION="$(curl $SRC_URL/ | \
+VERSION="$(curl --verbose $SRC_URL/ | \
 	sed -n "s/^.*ij\([0-9a-z]*\)-src.zip.*$/\1/p" | \
 	tail -n 1)"
 test "$VERSION" || {
