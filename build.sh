@@ -10,7 +10,7 @@ SRC_URL=$URL/src
 NOTES_URL=$URL/jars/notes.html
 
 echo "*** Get version of uploaded src zip"
-VERSION="$(curl $SRC_URL/ | \
+VERSION="$(curl --cacert ./isrgrootx1.pem $SRC_URL/ | \
 	sed -n "s/^.*ij\([0-9a-z]*\)-src.zip.*$/\1/p" | \
 	tail -n 1)"
 test "$VERSION" || {
@@ -26,7 +26,7 @@ git log FETCH_HEAD | grep "^      .[^ ]\? $DOTVERSION,\? " && {
 }
 echo "*** Get src zip"
 ZIP=ij$VERSION-src.zip
-test -f $ZIP || curl $SRC_URL/$ZIP > $ZIP || {
+test -f $ZIP || curl --cacert ./isrgrootx1.pem $SRC_URL/$ZIP > $ZIP || {
 	echo "Could not get $SRC_URL/$ZIP"
 	exit 1
 }
