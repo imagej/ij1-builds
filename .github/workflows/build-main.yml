@@ -20,7 +20,7 @@ jobs:
       - name: Install w3m
         run: sudo apt-get install -y w3m
       - name: Perform pre-build setup
-        run: ./github/setup.sh
+        run: ./.github/setup.sh
         env:
           IMAGEJA_DEPLOY_KEY: ${{ secrets.IMAGEJA_DEPLOY_KEY }}
       - name: Execute the build
