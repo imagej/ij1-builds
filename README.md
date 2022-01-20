@@ -1,4 +1,4 @@
-[![](https://github.com/imagej/ij1-builds/actions/workflows/build-main.yml/badge.svg)](https://github.com/imagej/ij1-builds/actions/workflows/build-main.yml)
+***THIS PROJECT IS OBSOLETE. PLEASE SEE https://github.com/imagej/ImageJ***
 
 Polls the ImageJ 1.x [notes.html](https://wsr.imagej.net/notes.html) page once a day. 
 When changes are detected:
